@@ -1,0 +1,7 @@
+# R459: Remielle awakened wing repair
+
+R458 incorrectly excluded `remielle_extra319/model.lvp` together with original character models. This is the generated wing-only support mesh (13,151 vertices, 14,592 triangles, 73 bones, two materials), previously included by R419. It is not a character body or source archive. The R458 runtime log reports a FileNotFoundException from CreateExtra319.
+
+R459 packages this unchanged generated wing mesh as `remielle_extra319/wing_mesh459.bin` and changes only the resource filename in CreateExtra319. The binary format and all geometry/animation code remain unchanged. R458 already permits mod support `.bin` files; therefore the existing updater can install the resource and new runtime together in one launch, with no intermediate updater or manual installation. Raw model archives and character body files remain excluded. The build now rejects a release missing this support resource before publication; this is not a user-installation integrity gate.
+
+Validate the signed update with the updater and bootstrap extracted from the original R458 public installer. Verify same-launch selection of R459, support geometry and both textures, original model/settings preservation, and no subsequent reapplication. Public-release verification uses the actual GitHub endpoint. Rendering in Unity is a separate check; no live installation is modified by these isolated tests.

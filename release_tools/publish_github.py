@@ -8,7 +8,7 @@ def sha(path):
   for b in iter(lambda:f.read(1024*1024),b''):h.update(b)
  return h.hexdigest()
 
-def publish(folder,sequence,repository,key):
+def publish(folder,sequence,repository,key,notes=None):
  root=Path(__file__).resolve().parents[1];folder=Path(folder).resolve();key=Path(key).resolve()
  env=dict(os.environ,GCM_INTERACTIVE='never',GIT_TERMINAL_PROMPT='0')
  gcm='C:/Program Files/Git/mingw64/bin/git-credential-manager-core.exe'
@@ -23,11 +23,12 @@ def publish(folder,sequence,repository,key):
  account=api('/user');details=api('/repos/'+repository)
  if not details.get('permissions',{}).get('push'):raise RuntimeError('Repository push permission missing')
  names=['modelchange-update.json','modelchange-update.sig','modelchange-update.zip','ModelChangeMod-R'+str(sequence)+'-install.zip']
+ names += [n for n in ('Supported_Models.txt','Bundled_Tool_Licenses.txt') if (folder/n).is_file()]
  audit=json.loads((folder/'build-audit.json').read_bytes())
  for name in names:
   f=folder/name;expected=audit['assets'][name]
   if f.stat().st_size!=expected['bytes'] or sha(f)!=expected['sha256']:raise ValueError('Build changed after review: '+name)
- with zipfile.ZipFile(folder/names[-1]) as z:
+ with zipfile.ZipFile(folder/('ModelChangeMod-R'+str(sequence)+'-install.zip')) as z:
   listing=z.namelist();original='ModelChangeMod/원본모델_넣는곳/'
   if original not in listing or any(n.startswith(original) and n!=original for n in listing):raise ValueError('Original folder must be empty')
   for n in listing:
@@ -50,6 +51,7 @@ def publish(folder,sequence,repository,key):
   if e.code!=404:raise
   release=None
  body='R'+str(sequence)+' 정식 배포\n\n기존과 동일하게 설치하기(고사양).bat 또는 설치하기(저사양).bat 하나를 실행하세요. R457 이전 설치는 이번 설치 버튼을 한 번 실행해야 자동 업데이트가 활성화됩니다. 이후에는 게임 시작 전에 모드 코드와 지원 파일의 추가·수정·제거가 반영됩니다.\n\n고사양은 원본 모델 텍스처, 저사양은 지원 모델 텍스처 최대 512px입니다. 두 모드 모두 CG 원본 화질·30fps와 검증된 27개 Live CG의 짧은 반복 구간을 사용합니다.\n\n원본 모델과 _work는 포함하지 않습니다. 원본모델_넣는곳은 빈 폴더이며 원본은 별도로 받아야 합니다. 신규 캐릭터의 코드·지원 자료·변환 정보는 업데이트할 수 있습니다.\n\n파일 누락·사용자 CG 변경·BepInEx 버전 차이만으로 모드 전체를 막는 환경 일치 검사는 사용하지 않습니다. 업데이트 실패 시 기존 설치로 실행합니다.\n\n설치 ZIP 전체를 풀고 게임과 TKEditor를 종료한 뒤 설치하세요. 별도 일반본이나 추가 패치는 없습니다.\n\n검증: 실제 R458 로더의 업데이트 후 런타임 선택, 고사양/저사양 설치 연동, 누적 추가·수정·삭제, 다운로드 실패 및 복원 시험. 이번 배포 과정에서는 실제 게임 플레이 재시험은 하지 않았습니다.'
+ if notes:body=Path(notes).read_text(encoding='utf-8-sig')
  if release is None:release=api(path,'POST',{'tag_name':tag,'target_commitish':commit,'name':'ModelChangeMod R'+str(sequence),'body':body,'draft':True,'prerelease':False})
  if not release['draft']:raise RuntimeError('This version is already published; do not replace published files')
  rid=release['id'];assets={a['name']:a for a in api(path+'/'+str(rid)+'/assets')}
@@ -89,4 +91,4 @@ def publish(folder,sequence,repository,key):
 if __name__=='__main__':
  p=argparse.ArgumentParser()
  for name in ('folder','sequence','repository','key'):p.add_argument('--'+name,required=True,type=int if name=='sequence' else str)
- a=p.parse_args();publish(a.folder,a.sequence,a.repository,a.key)
+ p.add_argument('--notes');a=p.parse_args();publish(a.folder,a.sequence,a.repository,a.key,a.notes)

@@ -39,6 +39,9 @@ def build(package,repo,sequence,key_path,output):
  history_path=key_path.with_name('release_history.json');history=json.loads(history_path.read_bytes()) if history_path.exists() else {'last_sequence':0,'baseline':{},'known':{}}
  if sequence<=history['last_sequence']:raise ValueError('Release sequence must increase')
  files=public_files(package)
+ if sequence>=459:
+  support='설치자료/필수효과/remielle_extra319/wing_mesh459.bin'
+  if support not in files or not files[support].stat().st_size:raise ValueError('Required generated Remielle wing support is missing')
  # Regenerate model metadata from the current package on every publication, including future characters.
  generated=output/('_metadata_'+str(sequence));generated.mkdir(parents=True,exist_ok=True)
  catalog=catalog_files(files);prefix='payload/BepInEx/LaevatTools/model_catalog458/'
@@ -81,6 +84,7 @@ def build(package,repo,sequence,key_path,output):
   z.writestr('ModelChangeMod/package_manifest.json',json.dumps(original_manifest,ensure_ascii=False,indent=2))
   z.writestr('ModelChangeMod/원본모델_넣는곳/',b'')
  if install_zip.stat().st_size>=2*1024**3:raise ValueError('Installer exceeds GitHub asset size limit')
+ for local,public in [('지원모델_목록.txt','Supported_Models.txt'),('포함도구_라이선스안내.txt','Bundled_Tool_Licenses.txt')]:shutil.copy2(package/local,dest/public)
  if not history['last_sequence']:history['baseline']=current
  for rel,h in current.items():history['known'][rel]=sorted(set(history['known'].get(rel,[]))|{h})
  history['last_sequence']=sequence
