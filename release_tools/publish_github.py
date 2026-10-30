@@ -78,6 +78,7 @@ def publish(folder,sequence,repository,key):
  for name in names:
   if name not in final_assets or final_assets[name]['size']!=audit['assets'][name]['bytes']:raise ValueError('Release asset missing')
  released=api(path+'/'+str(rid),'PATCH',{'draft':False,'make_latest':'true','body':body})
+ final_assets={a['name']:a for a in api(path+'/'+str(rid)+'/assets')}
  # Publication is the commit point for the cumulative-update history.
  pending=key.with_name('release_history.pending.json');history=key.with_name('release_history.json')
  if json.loads(pending.read_bytes())['last_sequence']!=sequence:raise ValueError('Publisher history sequence mismatch')
