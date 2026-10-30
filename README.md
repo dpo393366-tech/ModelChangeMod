@@ -2,6 +2,8 @@
 
 [최신 배포판 다운로드](https://github.com/dpo393366-tech/ModelChangeMod/releases/latest)
 
+[지원 모델과 원본 다운로드 주소](지원모델_목록.txt) · [포함 도구 라이선스 안내](포함도구_라이선스안내.txt)
+
 릴리스의 `ModelChangeMod-R458-install.zip`을 내려받아 전체 압축을 푼 다음, 기존과 같이 아래 버튼 중 하나를 실행합니다.
 
 - `설치하기(고사양).bat`: 원본 모델 텍스처 품질.

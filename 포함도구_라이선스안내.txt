@@ -1,0 +1,10 @@
+Bundled components and upstream source locations
+
+BepInEx 6.0.0-be.788+5b766a3 (IL2CPP Windows x64): https://github.com/BepInEx/BepInEx
+Pack source: https://thunderstore.io/c/sons-of-the-forest/p/BepInEx/BepInExPack_IL2CPP/
+Python 3.12.10: https://www.python.org/downloads/release/python-31210/ — PSF license included in tools/python/LICENSE.txt
+NumPy 2.3.5: https://github.com/numpy/numpy — license included in wheel dist-info
+Pillow 12.3.0: https://github.com/python-pillow/Pillow — license included in wheel dist-info
+ufbx Python binding 0.0.5: https://github.com/ufbx/ufbx — MIT license
+7-Zip 26.05: https://www.7-zip.org/ — GNU LGPL and unRAR restriction; full license in tools/7zip/License.txt, upstream source available at https://github.com/ip7z/7zip
+Shader third-party notices are preserved in the developer kit Character_Templates/source baseline.
