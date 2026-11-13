@@ -3,14 +3,14 @@
 배포 원본 폴더를 수정한 뒤 `build_release.py`에 이전보다 큰 `--sequence`를 전달합니다. 최초 공개 이후에는 같은 서명 키와 `release_history.json`을 계속 사용해야 합니다. 비밀키·이력은 저장소 밖에 보관합니다.
 
 ```powershell
-python release_tools/build_release.py --package "D:/배포/R419_Release_Candidate1/R419_Release_Candidate1" --repo dpo393366-tech/ModelChangeMod --sequence 459 --key "비공개폴더/signing_key.pem" --output "출력폴더"
+python release_tools/build_release.py --package "D:/배포/R419_Release_Candidate1/R419_Release_Candidate1" --repo dpo393366-tech/ModelChangeMod --sequence 460 --key "비공개폴더/signing_key.pem" --output "출력폴더"
 ```
 
 개발 도구의 Python에는 `cryptography`가 필요합니다. 사용자의 게임에는 별도 설치가 필요 없습니다.
 
-정식 GitHub Release `modelchange-459`에 다음 네 파일을 첨부합니다. 파일이 모두 올라온 다음 Draft를 해제합니다. 같은 버전의 파일을 덮어쓰지 말고 수정할 때마다 번호를 올립니다.
+정식 GitHub Release `modelchange-460`에 다음 네 파일을 첨부합니다. 파일이 모두 올라온 다음 Draft를 해제합니다. 같은 버전의 파일을 덮어쓰지 말고 수정할 때마다 번호를 올립니다.
 
-- `ModelChangeMod-R459-install.zip`
+- `ModelChangeMod-R460-install.zip`
 - `modelchange-update.zip`
 - `modelchange-update.json`
 - `modelchange-update.sig`
@@ -20,7 +20,7 @@ python release_tools/build_release.py --package "D:/배포/R419_Release_Candidat
 이 저장소에 게시 권한이 있는 Git Credential Manager 계정이 연결되어 있으면 아래 명령으로 소스 커밋·푸시, 초안 릴리스 생성, 네 파일 업로드, 최종 공개와 이력 확정을 처리할 수 있습니다. 토큰과 비밀키 내용은 출력하거나 업로드하지 않습니다. 위 빌드·검사를 완료한 결과에만 실행하세요.
 
 ```powershell
-python release_tools/publish_github.py --folder "출력폴더/modelchange-459" --sequence 459 --repository dpo393366-tech/ModelChangeMod --key "비공개폴더/signing_key.pem"
+python release_tools/publish_github.py --folder "출력폴더/modelchange-460" --sequence 460 --repository dpo393366-tech/ModelChangeMod --key "비공개폴더/signing_key.pem"
 ```
 
 신규 캐릭터는 새 실행 코드와 지원 CG·효과를 배포 폴더에 반영하고, 원본 식별 목록·변환 레시피·`지원모델_목록.txt`를 함께 갱신합니다. 빌더가 게임용 모델 정보와 최신 레시피 목록을 자동 생성합니다. 원본 모델은 별도 배포처에 두며 본 저장소에 추가하지 않습니다.
